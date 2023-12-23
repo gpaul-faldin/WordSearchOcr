@@ -21,8 +21,8 @@ export const parseWords = async (wordsMat: cv.Mat): Promise<string[]> => {
 
         if (text.length > 0)
             parsedWords.push(text.trimEnd());
-        if (text.length > 0)
-            cv.imwrite(`./img/words-${currentY}-contours.png`, roi);
+        // if (text.length > 0)
+            // cv.imwrite(`./img/words-${currentY}-contours.png`, roi);
 
     }
 
