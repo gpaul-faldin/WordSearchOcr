@@ -78,6 +78,17 @@ export const parseCells = (
         }
     }
 
+    if (currentX === board[currentY].length - 1) {
+        // Parse diagonal from the cell to the bottom left
+        y = 0;
+        x = 0;
+        while (currentY + y < board.length && currentX - x >= 0) {
+            parsedCells.diagonalLeft.push(board[currentY + y][currentX - x]);
+            y++;
+            x++;
+        }
+    }
+
     //console.log(parsedCells)
     if (parsedCells.vertical.length === 0 &&
         parsedCells.horizontal.length === 0 &&

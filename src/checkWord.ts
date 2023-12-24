@@ -2,94 +2,137 @@ import {boardCell} from "./parseBoard";
 import {direction} from "./parseCells";
 
 export interface WordPosition {
-    start: {x: number, y: number},
-    end: {x: number, y: number}
+    start: { x: number, y: number },
+    end: { x: number, y: number },
+    word: string
 }
 
-const wordIsHere  = (word: string, boardCell: boardCell[]): boolean => {
+const checkStringLeftToRight = (word: string, boardCell: boardCell[]): WordPosition | null => {
 
+    let wordIndex = 0;
+    let boardCellLetter = "";
+    for (let i = 0; i < boardCell.length; i++) {
+        boardCellLetter += boardCell[i].letter;
+    }
+    let boardCellLetterIndex = 0;
+
+    let start: { x: number, y: number } = {x: -1, y: -1};
+    let wordPosition: WordPosition | null = null;
+
+    while (boardCellLetter[boardCellLetterIndex]) {
+        if (boardCellLetter[boardCellLetterIndex] === word[wordIndex]) {
+            start.x = boardCell[boardCellLetterIndex].x;
+            start.y = boardCell[boardCellLetterIndex].y;
+            while (boardCellLetter[boardCellLetterIndex] === word[wordIndex] &&
+            word[wordIndex] &&
+            boardCellLetter[boardCellLetterIndex]) {
+                boardCellLetterIndex++;
+                wordIndex++;
+            }
+            if (!word[wordIndex]) {
+                wordPosition = {
+                    start: start,
+                    end: {x: boardCell[boardCellLetterIndex - 1].x, y: boardCell[boardCellLetterIndex - 1].y},
+                    word: word
+                }
+                return wordPosition;
+            }
+            boardCellLetterIndex -= wordIndex;
+            wordIndex = 0;
+        }
+        boardCellLetterIndex++;
+    }
+    return null;
+};
+
+const checkStringRightToLeft = (word: string, boardCell: boardCell[]): WordPosition | null => {
+
+    let wordIndex = 0;
+    let boardCellLetter = "";
+    for (let i = 0; i < boardCell.length; i++) {
+        boardCellLetter += boardCell[i].letter;
+    }
+    let boardCellLetterIndex = boardCellLetter.length - 1;
+
+    let start: { x: number, y: number } = {x: -1, y: -1};
+    let wordPosition: WordPosition | null = null;
+
+    while (boardCellLetter[boardCellLetterIndex]) {
+        if (boardCellLetter[boardCellLetterIndex] === word[wordIndex]) {
+            start.x = boardCell[boardCellLetterIndex].x;
+            start.y = boardCell[boardCellLetterIndex].y;
+            while (boardCellLetter[boardCellLetterIndex] === word[wordIndex] &&
+            word[wordIndex] &&
+            boardCellLetter[boardCellLetterIndex]) {
+                boardCellLetterIndex--;
+                wordIndex++;
+            }
+            if (!word[wordIndex]) {
+                wordPosition = {
+                    start: start,
+                    end: {x: boardCell[boardCellLetterIndex + 1].x, y: boardCell[boardCellLetterIndex + 1].y},
+                    word: word
+                }
+                return wordPosition;
+            }
+            boardCellLetterIndex += wordIndex;
+            wordIndex = 0;
+        }
+        boardCellLetterIndex--;
+    }
+    return null;
+
+}
+
+const wordIsHere = (word: string, boardCell: boardCell[]): WordPosition | null => {
+
+    let wordPosition: WordPosition | null = null;
 
     if (boardCell.length <= 0)
-        return false;
-
-
+        return null;
 
     let string = "";
     for (let i = 0; i < boardCell.length; i++) {
         string += boardCell[i].letter;
     }
 
-    let stringIndex = 0;
-    let wordIndex = 0;
-    while (string[stringIndex]) {
-        if (string[stringIndex] === word[wordIndex]) {
-            while (string[stringIndex] === word[wordIndex] && word[wordIndex] && string[stringIndex]) {
-                stringIndex++;
-                wordIndex++;
-            }
-            if (!word[wordIndex]){
-                console.log("WORD FOUND")
-                console.log(word)
-                return true;
-            }
-            wordIndex = 0;
-        }
-        stringIndex++;
+    if (checkStringLeftToRight(word, boardCell)) {
+        let wordPosition = checkStringLeftToRight(word, boardCell);
+        if (wordPosition)
+            return wordPosition;
+    } else if (checkStringRightToLeft(word, boardCell)) {
+        let wordPosition = checkStringRightToLeft(word, boardCell);
+        if (wordPosition)
+            return wordPosition;
     }
-    stringIndex-=1;
-    while (string[stringIndex]) {
-        if (string[stringIndex] === word[wordIndex]) {
-            while (string[stringIndex] === word[wordIndex] && word[wordIndex] && string[stringIndex]) {
-                stringIndex--;
-                wordIndex++;
-            }
-            if (!word[wordIndex]){
-                return true;
-            }
-            wordIndex = 0;
-        }
-        stringIndex--;
-    }
-    return false;
+
+    return wordPosition;
 }
 
-export const checkWord = (wordsArray: string[], boardCell: direction): Array<WordPosition> | null => {
+export const checkWord = (wordsArray: string[], boardCell: direction): Array<WordPosition> => {
+
+    const wordPositions: Array<WordPosition> = [];
 
     for (let i = 0; i < wordsArray.length; i++) {
         let word = wordsArray[i];
 
-
-
-        // Check vertical
         if (wordIsHere(word, boardCell.vertical)) {
-            console.log(wordIsHere(word, boardCell.vertical))
-            console.log("WORD FOUND")
-            console.log(word)
+            let wordPosition = wordIsHere(word, boardCell.vertical);
+            if (wordPosition)
+                wordPositions.push(wordPosition)
+        } else if (wordIsHere(word, boardCell.horizontal)) {
+            let wordPosition = wordIsHere(word, boardCell.horizontal);
+            if (wordPosition)
+                wordPositions.push(wordPosition)
+        } else if (wordIsHere(word, boardCell.diagonalRight)) {
+            let wordPosition = wordIsHere(word, boardCell.diagonalRight);
+            if (wordPosition)
+                wordPositions.push(wordPosition)
+        } else if (wordIsHere(word, boardCell.diagonalLeft)) {
+            let wordPosition = wordIsHere(word, boardCell.diagonalLeft);
+            if (wordPosition)
+                wordPositions.push(wordPosition)
         }
-        if (wordIsHere(word, boardCell.horizontal)){
-            console.log(wordIsHere(word, boardCell.horizontal))
-            console.log("WORD FOUND")
-            console.log(word)
-        }
-        if (wordIsHere(word, boardCell.diagonalRight)){
-            console.log(wordIsHere(word, boardCell.diagonalRight))
-            console.log("WORD FOUND")
-            console.log(word)
-        }
-        if (wordIsHere(word, boardCell.diagonalLeft)){
-            console.log(wordIsHere(word, boardCell.diagonalLeft))
-            console.log("WORD FOUND")
-            console.log(word)
-        }
-
-
-        // console.log(wordIsHere(word, boardCell.vertical));
-        // console.log(wordIsHere(word, boardCell.horizontal));
-        // console.log(wordIsHere(word, boardCell.diagonalRight));
-        // console.log(wordIsHere(word, boardCell.diagonalLeft));
-
-
-
     }
-    return null;
+    return wordPositions;
 }
