@@ -30,4 +30,6 @@ npm start
 
 ## Finished Project
 
-The project is finished on my side, the code is not perfect but I'm fine with it :)
+The project is finished on my side, and while the code may not be perfect, I'm satisfied with the results.
+
+To see the program in action, check out this [YouTube video](https://www.youtube.com/watch?v=KIiOrXnvHj8). The video showcases the WordSearchOcr script autonomously solving WordSearch puzzles on [thewordsearch.com](https://thewordsearch.com/). Feel free to explore the code and adapt it to your needs. Happy solving!
