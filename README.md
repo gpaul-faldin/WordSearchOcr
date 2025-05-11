@@ -146,8 +146,8 @@ WordSearchOcr is an autonomous solver for word search puzzles on thewordsearch.c
 - TypeScript
 - Node.js
 - Tesseract.js
-- OpenCV (@u4/opencv4nodejs)
+- OpenCV
 - Robot.js
-- Python (for the mouseinfo utility)
+- Python
 - ts-node
 <!-- PORTFOLIO_METADATA_END -->
