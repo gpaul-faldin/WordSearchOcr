@@ -133,14 +133,14 @@ The application is currently calibrated for 1080p screens. To adapt it for diffe
 </div>
 
 ### 📜 Project Overview
-WordSearchOcr is an autonomous solver for word search puzzles on thewordsearch.com. This project represents the culmination of my journey in OCR (Optical Character Recognition) development, serving as a milestone after successfully automating various human benchmark challenges using AI and computer vision techniques.
+WordSearchOcr is an autonomous solver for word search puzzles on thewordsearch.com. This project represents the culmination of my journey in OCR (Optical Character Recognition) development.
 
 ### 🎯 Key Features
 - **Fully Autonomous Operation**: Detects, solves, and completes word search puzzles without human intervention
 - **Computer Vision Integration**: Utilizes OpenCV for image processing and puzzle grid detection
 - **Advanced OCR**: Implements Tesseract.js to accurately recognize letters in the puzzle grid
 - **Automated Interaction**: Uses Robot.js to simulate mouse movements and interactions with the website
-- **Intelligent Word Finding**: Algorithm finds words in all possible directions (horizontal, vertical, diagonal)
+- **Intelligent Word Finding**: Algorithm finds words in all possible directions
 
 ### 🛠️ Technology Stack
 - TypeScript
